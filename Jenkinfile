@@ -1,0 +1,14 @@
+pipeline{
+    agent{
+
+        Label 'AGENT-1'
+
+    }
+    stages{
+        stage{
+            steps{
+
+            }
+        }
+    }
+}
