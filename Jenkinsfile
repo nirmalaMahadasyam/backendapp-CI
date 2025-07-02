@@ -11,8 +11,8 @@ pipeline{
      environment{
         def appVersion = '' //variable declaration
         //nexusUrl = 'nexus.nirmaladevops.cloud:8081'
-        //region = "us-east-1"
-        //account_id = "851725509871"
+        region = "us-east-1"
+        account_id = "851725509871"
     }
     stages {
         
@@ -35,14 +35,38 @@ pipeline{
                 """
             }
          }
-          stage('Build'){
+          stage('Build Artifact'){
             steps{
                 sh """
                 zip -q -r backend-${appVersion}.zip * -x Jenkinsfile -x backend-${appVersion}.zip
                 ls -ltr
+                echo "zip file stored at nexus repository"
                 """
             }
         }
+         stage('Docker build'){
+            steps{
+                sh """
+                    aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.${region}.amazonaws.com
+
+                    docker build -t ${account_id}.dkr.ecr.${region}.amazonaws.com/expense-backend:${appVersion} .
+
+                    docker push ${account_id}.dkr.ecr.${region}.amazonaws.com/expense-backend:${appVersion}
+                """
+            }
+        }
+
+        // stage('Deploy'){
+        //     steps{
+        //         sh """
+        //             aws eks update-kubeconfig --region us-east-1 --name expense-dev
+        //             cd helm
+        //             sed -i 's/IMAGE_VERSION/${appVersion}/g' values.yaml
+        //             helm upgrade backend .
+        //         """
+        //     }
+        // }
+        
         // stage('Install Dependencies') {
         //     steps {
         //        sh """
