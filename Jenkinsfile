@@ -31,10 +31,18 @@ pipeline{
                  npm install
                  ls -ltr
                 
-                echo "test is success"
+                echo "application version: $appVersion"
                 """
             }
          }
+          stage('Build'){
+            steps{
+                sh """
+                zip -q -r backend-${appVersion}.zip * -x Jenkinsfile -x backend-${appVersion}.zip
+                ls -ltr
+                """
+            }
+        }
         // stage('Install Dependencies') {
         //     steps {
         //        sh """
@@ -44,14 +52,7 @@ pipeline{
         //        """
         //     }
         // }
-        // stage('Build'){
-        //     steps{
-        //         sh """
-        //         zip -q -r backend-${appVersion}.zip * -x Jenkinsfile -x backend-${appVersion}.zip
-        //         ls -ltr
-        //         """
-        //     }
-        // }
+       
         // stage('Docker build'){
         //     steps{
         //         sh """
