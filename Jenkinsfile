@@ -8,19 +8,19 @@ pipeline{
         ansiColor('xterm')
     }
    
-     environment{
-        def appVersion = '' //variable declaration
+     //environment{
+       // def appVersion = '' //variable declaration
         //nexusUrl = 'nexus.nirmaladevops.cloud:8081'
         //region = "us-east-1"
         //account_id = "851725509871"
-    }
+    //}
     stages {
         stage('Test') {
              steps {
                sh """
-        //         npm install
+                 
                  ls -ltr
-                //echo "application version: $appVersion
+                
                 echo "test is success"
                 """
             }
