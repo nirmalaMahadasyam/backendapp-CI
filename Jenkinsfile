@@ -18,7 +18,7 @@ pipeline{
         stage('Test') {
              steps {
                sh """
-                 
+                 npm install
                  ls -ltr
                 
                 echo "test is success"
