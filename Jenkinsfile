@@ -8,14 +8,24 @@ pipeline{
         ansiColor('xterm')
     }
    
-     //environment{
-       // def appVersion = '' //variable declaration
+     environment{
+        def appVersion = '' //variable declaration
         //nexusUrl = 'nexus.nirmaladevops.cloud:8081'
         //region = "us-east-1"
         //account_id = "851725509871"
-    //}
+    }
     stages {
-        stage('Test') {
+        
+        stage('read the version'){
+            steps{
+                script{
+                    def packageJson = readJSON file: 'package.json'
+                    appVersion = packageJson.version
+                    echo "application version: $appVersion"
+                }
+            }
+        }
+        stage('Install Dependencies') {
              steps {
                sh """
                  npm install
@@ -25,15 +35,6 @@ pipeline{
                 """
             }
          }
-        // stage('read the version'){
-        //     steps{
-        //         script{
-        //             def packageJson = readJSON file: 'package.json'
-        //             appVersion = packageJson.version
-        //             echo "application version: $appVersion"
-        //         }
-        //     }
-        // }
         // stage('Install Dependencies') {
         //     steps {
         //        sh """
